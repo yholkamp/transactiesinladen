@@ -14,40 +14,85 @@ transactions from a CSV file as a financial statement.
   `src/pages/`, shown only when operator details are configured (see [Legal pages](#legal-pages)).
   Update `LAST_UPDATED` in `src/pages/LegalPage.tsx` when changing either text.
 
-## Moneybird setup
+## Self-hosting
 
-1. Register an application at https://moneybird.com/user/applications/new (choose "API" access).
-2. Add redirect URIs for every origin you use:
+You can run your own copy on Cloudflare Workers; the free plan is enough. You need a Cloudflare
+account, a Moneybird account and Node.js.
+
+1. Get the code and log in to Cloudflare:
+
+   ```bash
+   git clone https://github.com/yholkamp/transactiesinladen.git
+   cd transactiesinladen
+   npm install
+   npx wrangler login
+   ```
+
+2. Deploy once to create the Worker and get its URL:
+
+   ```bash
+   npm run deploy
+   ```
+
+   Wrangler prints the URL, e.g. `https://creditbird.<your-subdomain>.workers.dev`. To use another
+   Worker name, change `name` in `wrangler.toml` before deploying. Connecting to Moneybird fails until
+   the secrets from step 4 are set.
+
+3. Register a Moneybird application at https://moneybird.com/user/applications/new (choose "API"
+   access). Add a redirect URI for every origin you use:
    - `https://creditbird.<your-subdomain>.workers.dev/api/auth/callback`
-   - `http://localhost:8787/api/auth/callback` (local development)
-3. In the administration you import into, create a credit card financial account
-   (the API cannot create accounts).
+   - `https://<your-custom-domain>/api/auth/callback`, if you add a custom domain to the Worker
+   - `http://localhost:8787/api/auth/callback`, for [local development](#local-development)
 
-The app requests the `bank` and `settings` scopes.
+   Keep the client ID and client secret at hand. The app requests the `bank` and `settings` scopes.
+
+4. Set the secrets on the Worker:
+
+   ```bash
+   npx wrangler secret put MONEYBIRD_CLIENT_ID       # paste the client ID
+   npx wrangler secret put MONEYBIRD_CLIENT_SECRET   # paste the client secret
+   openssl rand -base64 32 | npx wrangler secret put SESSION_SECRET
+   ```
+
+   | Secret                    | Value                                                                                |
+   | ------------------------- | ------------------------------------------------------------------------------------ |
+   | `MONEYBIRD_CLIENT_ID`     | Client ID of your Moneybird application                                              |
+   | `MONEYBIRD_CLIENT_SECRET` | Client secret of your Moneybird application                                          |
+   | `SESSION_SECRET`          | Random string of at least 32 characters that encrypts the session cookie; changing it logs everyone out |
+
+   Each `secret put` takes effect right away and secrets survive later deploys. You can also manage
+   them in the Cloudflare dashboard under the Worker's Settings → Variables and Secrets. They are
+   runtime secrets: don't put them in `wrangler.toml` or `.env.local`, which only holds the build-time
+   [legal page](#legal-pages) variables.
+
+5. In the Moneybird administration you import into, create a credit card financial account (the API
+   cannot create accounts).
+
+6. Open the Worker URL and connect to Moneybird.
+
+To update, run `git pull && npm run deploy`. If you offer your instance to others, also configure the
+[legal pages](#legal-pages) and see the [license](#license).
+
+### Deploying from Git
+
+Instead of deploying from your machine, you can connect your fork to Workers Builds (Git
+integration). It deploys `main` with `npx wrangler deploy` and uploads preview versions for other
+branches with `npx wrangler versions upload`. Previews only work once the Worker exists, i.e. after
+the first production deploy. Set the secrets on the Worker as in step 4; `VITE_LEGAL_*` variables go
+in the build variables.
 
 ## Local development
 
 ```bash
 npm install
-cp .dev.vars.example .dev.vars   # fill in client id/secret and a random SESSION_SECRET
+cp .dev.vars.example .dev.vars   # the same three secrets as in self-hosting step 4
 npm run dev                      # builds and runs wrangler dev on http://localhost:8787
 npm test
 ```
 
-`SESSION_SECRET` must be at least 32 characters (`openssl rand -base64 32`). The session cookie is `Secure`; Chrome/Firefox accept it on http://localhost, Safari may not, so use Chrome/Firefox for local dev.
-
-## Deploy
-
-```bash
-npm run deploy                   # first deploy creates the creditbird Worker
-npx wrangler secret put MONEYBIRD_CLIENT_ID
-npx wrangler secret put MONEYBIRD_CLIENT_SECRET
-npx wrangler secret put SESSION_SECRET
-```
-
-Workers Builds (Git integration) deploys `main` with `npx wrangler deploy` and uploads preview
-versions for other branches with `npx wrangler versions upload`. Previews only work once the Worker
-exists, i.e. after the first production deploy.
+Your Moneybird application needs `http://localhost:8787/api/auth/callback` as a redirect URI. The
+session cookie is `Secure`; Chrome/Firefox accept it on http://localhost, Safari may not, so use
+Chrome/Firefox for local dev.
 
 ## Legal pages
 
