@@ -27,6 +27,8 @@ export const nl = {
   },
   footer: {
     contact: 'Contact',
+    openSource: 'Gratis en open source. Liever zelf hosten?',
+    source: 'Bekijk de code op GitHub',
   },
   account: {
     heading: '1. Kies rekening',

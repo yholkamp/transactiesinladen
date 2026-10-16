@@ -29,6 +29,8 @@ export const en: Messages = {
   },
   footer: {
     contact: 'Contact',
+    openSource: 'Free and open source. Rather host it yourself?',
+    source: 'Get the code on GitHub',
   },
   account: {
     heading: '1. Choose account',
