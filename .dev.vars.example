@@ -1,0 +1,4 @@
+MONEYBIRD_CLIENT_ID=your-client-id
+MONEYBIRD_CLIENT_SECRET=your-client-secret
+# SESSION_SECRET must be at least 32 characters
+SESSION_SECRET=generate-with-openssl-rand-base64-32

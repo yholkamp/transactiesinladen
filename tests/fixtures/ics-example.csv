@@ -1,0 +1,10 @@
+﻿Transactiedatum;Boekingsdatum;Omschrijving;Naam Card-houder;Card nummer;Debit/Credit;Bedrag;Merchant categorie;Land;Valuta;Bedrag in oorspronkelijke valuta;Type transactie;Wallet provider
+01-10-2026;02-10-2026;MUSICBOX.COM/BILL CORK IRL;"Jansen, J";****1234;D;9,99;Digital Goods-Multi Categ;IRL;EUR;9,99;Transaction;null
+28-09-2026;29-09-2026;GAMEHUB*GAMEHUB APP DUBLIN IRL;"Jansen, J";****1234;D;2,99;Computer Programming;IRL;EUR;2,99;Transaction;null
+12-09-2026;12-09-2026;GEINCASSEERD VORIG SALDO;"Jansen, J";****null;C;-163,94;;;EUR;-163,94;Payment;null
+06-09-2026;07-09-2026;ACME* CLOUD PLAN SAN FRANCISCO USA;"Jansen, J";****1234;D;4,29;Computer Software Stores;USA;USD;4,85;Transaction;null
+02-09-2026;03-09-2026;GAMEHUB *GAMEHUB AP DUBLIN 2 IRL;"Jansen, J";****1234;D;4,99;Digital Goods-Games;IRL;EUR;4,99;Transaction;null
+01-09-2026;02-09-2026;MUSICBOX.COM/BILL CORK IRL;"Jansen, J";****1234;D;9,99;Digital Goods-Multi Categ;IRL;EUR;9,99;Transaction;null
+28-08-2026;29-08-2026;GAMEHUB*GAMEHUB APP DUBLIN IRL;"Jansen, J";****1234;D;2,99;Computer Programming;IRL;EUR;2,99;Transaction;null
+18-08-2026;19-08-2026;"EXAMPLE AI, INC NEW YORK USA";"Jansen, J";****1234;D;46,97;Computer Software Stores;USA;USD;52,97;Transaction;null
+18-08-2026;18-08-2026;MUSICBOX.COM/NL CORK IRL;"Jansen, J";****1234;D;99,00;Electronic Sales;IRL;EUR;99,00;Transaction;null
