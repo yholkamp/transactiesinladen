@@ -1,7 +1,8 @@
+import type { Analytics } from '../lib/analytics';
 import type { Operator } from '../lib/operator';
 import { LegalPage, OperatorAddress } from './LegalPage';
 
-export function Privacy({ operator }: { operator: Operator }) {
+export function Privacy({ operator, analytics }: { operator: Operator; analytics: Analytics | null }) {
   const host = window.location.hostname;
   return (
     <LegalPage title="Privacybeleid">
@@ -42,11 +43,28 @@ export function Privacy({ operator }: { operator: Operator }) {
         Bij het bezoeken van de tool verwerkt onze hostingpartij technische gegevens zoals je IP-adres en
         browsergegevens. Dit is nodig om de website te leveren en te beveiligen, bijvoorbeeld tegen misbruik.
       </p>
+      {analytics && (
+        <>
+          <h3>Bezoekersstatistieken</h3>
+          <p>
+            We gebruiken Plausible Analytics om bij te houden hoe de tool wordt gebruikt, bijvoorbeeld het aantal
+            bezoekers, de bezochte pagina&rsquo;s, de website waar je vandaan komt en je land, browser en
+            besturingssysteem. Plausible gebruikt geen cookies en slaat geen IP-adressen op. Uit je IP-adres en
+            browsergegevens wordt een anonieme code berekend die elke dag verandert, zodat bezoekers alleen geteld
+            worden en niet over meerdere dagen of websites gevolgd kunnen worden. De statistieken worden bijgehouden
+            op {analytics.host} en bevatten geen gegevens uit je CSV-bestand of je Moneybird-administratie.
+          </p>
+        </>
+      )}
       <h3>Grondslag</h3>
       <p>
         We verwerken deze gegevens omdat dit nodig is om de dienst te leveren die je gebruikt (uitvoering van een
         overeenkomst, artikel 6 lid 1 sub b AVG) en, voor technische gegevens en beveiliging, op basis van ons
         gerechtvaardigd belang bij een veilige en werkende dienst (artikel 6 lid 1 sub f AVG).
+        {analytics && (
+          <> Bezoekersstatistieken verwerken we op basis van ons gerechtvaardigd belang bij inzicht in het gebruik
+            van de tool, zodat we die kunnen verbeteren (artikel 6 lid 1 sub f AVG).</>
+        )}
       </p>
 
       <h2>3. Cookies en lokale opslag</h2>
@@ -62,6 +80,7 @@ export function Privacy({ operator }: { operator: Operator }) {
       </p>
       <p>
         We gebruiken geen analytische cookies, tracking- of advertentiecookies en we plaatsen geen cookies van derden.
+        {analytics && <> De bezoekersstatistieken van Plausible werken zonder cookies.</>}
       </p>
 
       <h2>4. Met wie delen we gegevens?</h2>

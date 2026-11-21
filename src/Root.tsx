@@ -1,5 +1,6 @@
 import App from './App';
 import { Footer } from './components/Footer';
+import { ANALYTICS } from './lib/analytics';
 import { OPERATOR } from './lib/operator';
 import { pageForPath } from './lib/route';
 import { Privacy } from './pages/Privacy';
@@ -9,7 +10,7 @@ export function Root() {
   const page = pageForPath(window.location.pathname);
   return (
     <div className="page">
-      {OPERATOR && page === 'privacy' ? <Privacy operator={OPERATOR} />
+      {OPERATOR && page === 'privacy' ? <Privacy operator={OPERATOR} analytics={ANALYTICS} />
         : OPERATOR && page === 'terms' ? <Terms operator={OPERATOR} />
         : <App />}
       <Footer />

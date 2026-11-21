@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import type { Operator } from '../lib/operator';
 
-export const LAST_UPDATED = '16 oktober 2026';
+export const LAST_UPDATED = '19 november 2026';
 
 export function OperatorAddress({ operator }: { operator: Operator }) {
   return (

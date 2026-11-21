@@ -13,6 +13,8 @@ transactions from a CSV file as a financial statement.
 - Dutch-only legal pages: `/privacy` (privacybeleid) and `/voorwaarden` (algemene voorwaarden), in
   `src/pages/`, shown only when operator details are configured (see [Legal pages](#legal-pages)).
   Update `LAST_UPDATED` in `src/pages/LegalPage.tsx` when changing either text.
+- Cookieless visitor statistics with [Plausible Analytics](https://plausible.io), on by default (see
+  [Analytics](#analytics)).
 
 ## Self-hosting
 
@@ -63,7 +65,7 @@ account, a Moneybird account and Node.js.
    Each `secret put` takes effect right away and secrets survive later deploys. You can also manage
    them in the Cloudflare dashboard under the Worker's Settings → Variables and Secrets. They are
    runtime secrets: don't put them in `wrangler.toml` or `.env.local`, which only holds the build-time
-   [legal page](#legal-pages) variables.
+   [legal page](#legal-pages) and [analytics](#analytics) variables.
 
 5. In the Moneybird administration you import into, create a credit card financial account (the API
    cannot create accounts).
@@ -78,8 +80,8 @@ To update, run `git pull && npm run deploy`. If you offer your instance to other
 Instead of deploying from your machine, you can connect your fork to Workers Builds (Git
 integration). It deploys `main` with `npx wrangler deploy` and uploads preview versions for other
 branches with `npx wrangler versions upload`. Previews only work once the Worker exists, i.e. after
-the first production deploy. Set the secrets on the Worker as in step 4; `VITE_LEGAL_*` variables go
-in the build variables.
+the first production deploy. Set the secrets on the Worker as in step 4; `VITE_LEGAL_*` and
+`VITE_PLAUSIBLE_HOST` variables go in the build variables.
 
 ## Local development
 
@@ -113,6 +115,16 @@ the same variables as build variables in Workers Builds.
 Without a name and email none of it is shown, which is fine for personal use. If you offer the tool to
 others, review the texts in `src/pages/` yourself; they describe this app as published here and are
 not legal advice.
+
+## Analytics
+
+The app loads the [Plausible](https://plausible.io) script from `https://plausible.nextpulse.net`,
+the Plausible server of the hosted version of this tool, and the privacy policy gets a section on
+the statistics. When self-hosting, set `VITE_PLAUSIBLE_HOST` at build time (in `.env.local` or the
+Workers Builds build variables) to `off` to load no analytics script, or to your own Plausible host,
+e.g. `https://plausible.example.com` for a self-hosted Plausible or `https://plausible.io`. Add the
+site in Plausible under the hostname the tool is served on, without `www.`; visits on other hostnames
+(such as preview URLs) are rejected by Plausible and visits from localhost are ignored.
 
 ## How amounts are imported
 
